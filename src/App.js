@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Button, Navbar, Alignment, FormGroup, InputGroup } from '@blueprintjs/core';
+import "./App.css"
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App">
+        <Navbar>
+          <Navbar.Group align={Alignment.LEFT}>
+            <Navbar.Heading>DA2POINTAUC</Navbar.Heading>
+            <Navbar.Divider />
+            <Button className="bp4-minimal" icon="code" text="Исходный код" />
+            <Button className="bp4-minimal" icon="dollar" text="Донат" />
+          </Navbar.Group>
+        </Navbar>
+        <div class="main-app-body">
+          <FormGroup
+            label="Ссылка на Donationalerts"
+            labelFor="text-input"
+          >
+            <InputGroup id="text-input" placeholder="https://donationalerts.com/r/citinezzz" />
+            <div class="centered-submit-button">
+              <Button intent="primary" text="Экспортировать" />
+            </div>
+          </FormGroup>
+        </div>
+      </div>
+    </>
+
   );
 }
-
-export default App;
