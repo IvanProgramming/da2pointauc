@@ -23,7 +23,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Print(body.Url)
 	// Checking if url is valid
-	if strings.HasPrefix("https://donationalerts.com/r/", body.Url) || strings.HasPrefix("https://www.donationalerts.com/r/", body.Url) {
+	if strings.HasPrefix(body.Url, "https://donationalerts.com/r/") || strings.HasPrefix(body.Url, "https://www.donationalerts.com/r/") {
 		// If url is valid, we can make a request to the url with that nickname
 		nick := strings.Trim(strings.TrimPrefix(body.Url, "https://donationalerts.com/r/"), "/ ")
 		if nick == "" {
