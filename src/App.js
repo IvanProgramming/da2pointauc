@@ -55,6 +55,9 @@ export default function App() {
             </div>
           </FormGroup>
         </div>
+        <div className="footer">
+          <p>© 2021 IvanProgramming. Hosted on <a href="https://vercel.app">Vercel</a></p>
+        </div>
       </div>
     </>
 
