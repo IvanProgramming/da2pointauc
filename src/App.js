@@ -3,7 +3,22 @@ import { Button, Navbar, Alignment, FormGroup, InputGroup } from '@blueprintjs/c
 import "./App.css"
 
 async function getFileFromAPI(link) {
-  console.log("Getting file from API", link);
+  fetch("/api/main", {
+    method: "POST",
+    body: JSON.stringify({url: link}),
+  }).then((res) => res.json()).then((data) => {
+    if (data.error !== undefined) {
+      alert(data.error);
+    }
+    else {
+      console.log(data);
+      const element = document.createElement("a");
+      const file = new Blob([data.file], {type: 'application/json'});
+      element.href = URL.createObjectURL(file);
+      element.download = "da2pointauc.json";
+      document.body.appendChild(element);
+      element.click();
+    }})
 }
 
 export default function App() {
