@@ -12,12 +12,13 @@ async function getFileFromAPI(link) {
     }
     else {
       console.log(data);
-      const element = document.createElement("a");
-      const file = new Blob([data.file], {type: 'application/json'});
-      element.href = URL.createObjectURL(file);
-      element.download = "da2pointauc.json";
-      document.body.appendChild(element);
-      element.click();
+      let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+      let downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", "subscribers.json");
+      document.body.appendChild(downloadAnchorNode); // required for firefox
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
     }})
 }
 
