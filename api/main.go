@@ -53,6 +53,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, `{"error": "Invalid url"}`, http.StatusBadRequest)
 			return
 		}
+		log.Printf("Nick: %s\n", nick)
 		// Making a request to the url
 		resp, err := http.Get("https://www.donationalerts.com/api/v1/user/" + nick + "/donationpagesettings")
 		if err != nil {
