@@ -7,8 +7,6 @@ async function getFileFromAPI(link) {
 }
 
 export default function App() {
-  const [ fileUploaded, setFileUploaded ] = useState(false);
-  const [ file, setFile ] = useState(null);
   const [ link, setLink ] = useState("");
 
   function setLinkFromEvent(e) {
