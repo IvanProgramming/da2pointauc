@@ -22,10 +22,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Checking if url is valid
-	if !strings.HasPrefix("https://donationalerts.com/r/", body.Url) && !strings.HasPrefix("https://www.donationalerts.com/r/", body.Url) {
-		http.Error(w, `{"error": "Invalid url"}`, http.StatusBadRequest)
-		return
-	} else {
+	if strings.HasPrefix("https://donationalerts.com/r/", body.Url) || strings.HasPrefix("https://www.donationalerts.com/r/", body.Url) {
 		// If url is valid, we can make a request to the url with that nickname
 		nick := strings.Trim(strings.TrimPrefix(body.Url, "https://donationalerts.com/r/"), "/ ")
 		if nick == "" {
@@ -41,6 +38,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		defer resp.Body.Close()
 		respJson := R{}
 		json.NewDecoder(resp.Body).Decode(&respJson)
+	} else {
+		http.Error(w, `{"error": "Invalid url"}`, http.StatusBadRequest)
+		return
 	}
 
 }
