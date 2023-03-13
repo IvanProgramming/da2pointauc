@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 type RequestBody struct {
@@ -32,6 +34,7 @@ type PointAucItem struct {
 	Amount int    `json:"amount"`
 	FastId int    `json:"fastId"`
 	Name   string `json:"name"`
+	Id     string `json:"id"`
 }
 
 type R map[string]interface{}
@@ -82,6 +85,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 				Amount: v.AmountValue / respJson.Poll.PerAmountVotes.RUB,
 				FastId: i + 1,
 				Name:   v.Title,
+				Id:     uuid.New().String(),
 			})
 		}
 		json.NewEncoder(w).Encode(auks)
