@@ -19,9 +19,14 @@ type DaPollItem struct {
 type DAPoll struct {
 	Options []DaPollItem `json:"options"`
 }
+
 type DAResp struct {
 	Poll           DAPoll `json:"poll"`
 	PerAmountVotes R      `json:"per_amount_votes"`
+}
+
+type DaBaseResp struct {
+	Data DAResp `json:"data"`
 }
 
 type PointAucItem struct {
@@ -56,8 +61,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer resp.Body.Close()
-		respJson := DAResp{}
-		json.NewDecoder(resp.Body).Decode(&respJson)
+		respBaseJson := DaBaseResp{}
+		json.NewDecoder(resp.Body).Decode(&respBaseJson)
+		respJson := respBaseJson.Data
 		// Checking if the user has a poll
 		if len(respJson.Poll.Options) == 0 {
 			http.Error(w, `{"error": "This user has no poll"}`, http.StatusBadRequest)
