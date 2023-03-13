@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -20,7 +21,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
+	log.Print(body.Url)
 	// Checking if url is valid
 	if strings.HasPrefix("https://donationalerts.com/r/", body.Url) || strings.HasPrefix("https://www.donationalerts.com/r/", body.Url) {
 		// If url is valid, we can make a request to the url with that nickname
