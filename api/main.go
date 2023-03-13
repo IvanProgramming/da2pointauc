@@ -11,6 +11,25 @@ type RequestBody struct {
 	Url string `json:"url"`
 }
 
+type DaPollItem struct {
+	Title       string `json:"title"`
+	AmountValue int    `json:"amount_value"`
+}
+
+type DAPoll struct {
+	Options []DaPollItem `json:"options"`
+}
+type DAResp struct {
+	Poll           DAPoll `json:"poll"`
+	PerAmountVotes R      `json:"per_amount_votes"`
+}
+
+type PointAucItem struct {
+	Amount int    `json:"amount"`
+	FastId int    `json:"fastId"`
+	Name   string `json:"name"`
+}
+
 type R map[string]interface{}
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -37,8 +56,24 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer resp.Body.Close()
-		respJson := R{}
+		respJson := DAResp{}
 		json.NewDecoder(resp.Body).Decode(&respJson)
+		// Checking if the user has a poll
+		if len(respJson.Poll.Options) == 0 {
+			http.Error(w, `{"error": "This user has no poll"}`, http.StatusBadRequest)
+			return
+		}
+
+		auks := []PointAucItem{}
+		for i, v := range respJson.Poll.Options {
+			auks = append(auks, PointAucItem{
+				Amount: v.AmountValue / respJson.PerAmountVotes["RUB"].(int),
+				FastId: i + 1,
+				Name:   v.Title,
+			})
+		}
+		json.NewEncoder(w).Encode(auks)
+
 	} else {
 		http.Error(w, `{"error": "Invalid url"}`, http.StatusBadRequest)
 		return
