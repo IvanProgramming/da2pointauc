@@ -11,22 +11,21 @@ type RequestBody struct {
 	Url string `json:"url"`
 }
 
-type DaPollItem struct {
-	Title       string `json:"title"`
-	AmountValue int    `json:"amount_value"`
-}
-
-type DAPoll struct {
-	Options []DaPollItem `json:"options"`
-}
-
-type DAResp struct {
-	Poll           DAPoll `json:"poll"`
-	PerAmountVotes R      `json:"per_amount_votes"`
-}
-
-type DaBaseResp struct {
-	Data DAResp `json:"data"`
+type DaResp struct {
+	Data struct {
+		Poll struct {
+			Options []struct {
+				ID            int     `json:"id"`
+				Title         string  `json:"title"`
+				AmountValue   int     `json:"amount_value"`
+				AmountPercent float64 `json:"amount_percent"`
+				IsWinner      int     `json:"is_winner"`
+			} `json:"options"`
+			PerAmountVotes struct {
+				RUB int `json:"RUB"`
+			} `json:"per_amount_votes"`
+		} `json:"poll"`
+	} `json:"data"`
 }
 
 type PointAucItem struct {
@@ -61,7 +60,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer resp.Body.Close()
-		respBaseJson := DaBaseResp{}
+		respBaseJson := DaResp{}
 		json.NewDecoder(resp.Body).Decode(&respBaseJson)
 		log.Print(respBaseJson)
 		respJson := respBaseJson.Data
@@ -74,7 +73,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		auks := []PointAucItem{}
 		for i, v := range respJson.Poll.Options {
 			auks = append(auks, PointAucItem{
-				Amount: v.AmountValue / respJson.PerAmountVotes["RUB"].(int),
+				Amount: v.AmountValue / respJson.Poll.PerAmountVotes.RUB,
 				FastId: i + 1,
 				Name:   v.Title,
 			})
