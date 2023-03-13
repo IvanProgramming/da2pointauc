@@ -63,6 +63,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		defer resp.Body.Close()
 		respBaseJson := DaBaseResp{}
 		json.NewDecoder(resp.Body).Decode(&respBaseJson)
+		log.Print(respBaseJson)
 		respJson := respBaseJson.Data
 		// Checking if the user has a poll
 		if len(respJson.Poll.Options) == 0 {
