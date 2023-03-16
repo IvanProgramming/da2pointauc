@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"sort"
 	"strings"
 
 	"github.com/google/uuid"
@@ -78,7 +79,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, `{"error": "This user has no poll"}`, http.StatusBadRequest)
 			return
 		}
-
+		// Sorting the poll
+		sort.Slice(respJson.Poll.Options, func(i, j int) bool {
+			return respJson.Poll.Options[i].AmountValue < respJson.Poll.Options[j].AmountValue
+		})
 		auks := []PointAucItem{}
 		for i, v := range respJson.Poll.Options {
 			auks = append(auks, PointAucItem{
