@@ -5,9 +5,8 @@ import (
 	"log"
 	"net/http"
 	"sort"
+	"strconv"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 type RequestBody struct {
@@ -81,7 +80,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		}
 		// Sorting the poll
 		sort.Slice(respJson.Poll.Options, func(i, j int) bool {
-			return respJson.Poll.Options[i].AmountValue < respJson.Poll.Options[j].AmountValue
+			return respJson.Poll.Options[i].AmountValue > respJson.Poll.Options[j].AmountValue
 		})
 		auks := []PointAucItem{}
 		for i, v := range respJson.Poll.Options {
@@ -89,7 +88,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 				Amount: v.AmountValue / respJson.Poll.PerAmountVotes.RUB,
 				FastId: i + 1,
 				Name:   v.Title,
-				Id:     uuid.New().String(),
+				Id:     strconv.Itoa(i + 1),
 			})
 		}
 		json.NewEncoder(w).Encode(auks)
