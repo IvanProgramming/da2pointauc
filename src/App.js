@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Navbar, Alignment, FormGroup, InputGroup } from '@blueprintjs/core';
 import "./App.css"
 
@@ -39,9 +39,11 @@ export default function App() {
   const [link, setLink] = useState("");
   const [loadingState, setLoadingState] = useState(false);
   const [total, setTotal] = useState(0);
-  if (localStorage.getItem("url") !== null) {
-    setLink(localStorage.getItem("url"));
-  }
+  useEffect(() => {
+    if (localStorage.getItem("url") !== null) {
+      setLink(localStorage.getItem("url"));
+    }
+  }, []);
   function setLinkFromEvent(e) {
     setLink(e.target.value);
   }
