@@ -41,3 +41,21 @@
   justify-content: center;
   align-items: center;
 }
+
+.total {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-right: 10px;
+  display: inline-flex;
+  justify-content: space-between
+}
+
+.total-value {
+  color: #007bff;
+}
+
+.total-value-comment {
+  color: #6c757d;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
