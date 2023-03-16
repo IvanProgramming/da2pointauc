@@ -39,6 +39,9 @@ export default function App() {
   const [link, setLink] = useState("");
   const [loadingState, setLoadingState] = useState(false);
   const [total, setTotal] = useState(0);
+  if (localStorage.getItem("url") !== null) {
+    setLink(localStorage.getItem("url"));
+  }
   function setLinkFromEvent(e) {
     setLink(e.target.value);
   }
