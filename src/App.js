@@ -8,6 +8,9 @@ async function getFileFromAPI(link, setLoadingState, setTotal) {
     method: "POST",
     body: JSON.stringify({ url: link }),
   }).then((res) => res.json()).then((data) => {
+    if (localStorage.getItem("url") !== link) {
+      localStorage.setItem("url", link);
+    }
     if (data.error !== undefined) {
       alert(data.error);
     }
